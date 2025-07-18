@@ -1,16 +1,22 @@
-resource "aws_security_group" "web_server_sg_tf" {
-  name        = "web-server-sg-tf"
+resource "aws_security_group" "tf_sg" {
+  name        = "tf_sg"
   description = "Allow HTTPS to web server"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = "vpc-05bdcc8880aab85ab"
 
   ingress {
-    description = "HTTPS ingress"
-    from_port   = 443
-    to_port     = 443
+    description = "TLS from VPC"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    
   }
-
+ ingress {
+    description = "TLS from VPC"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -22,7 +28,6 @@ resource "aws_security_group" "web_server_sg_tf" {
 data "aws_vpc" "default" {
   default = true
 }
-
 
 resource "aws_instance" "web" {
   ami           = "resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
