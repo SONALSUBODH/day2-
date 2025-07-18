@@ -37,3 +37,15 @@ resource "aws_instance" "web" {
     Name = "HelloWorld"
   }
 }
+
+
+
+resource "aws_instance" "demo" {
+  ami           = "ami-0a1235697f4afa8a4"  
+  instance_type = "t2.micro"
+  security_groups = [aws_security_group.sm_tg.name]
+
+  tags = {
+    Name = "Hellosubodh"
+  }
+}
